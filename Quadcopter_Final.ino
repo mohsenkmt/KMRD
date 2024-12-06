@@ -5,11 +5,11 @@
 #include <ESPAsyncWebServer.h>
 #include <SPIFFS.h>
 #include <Wire.h>
+#include <ArduinoOTA.h>
 
 
-
-const char *ssid = "KMRD Project";
-const char *password = "KMRDmoreKD";
+const char *ssid = "KMRD Drone Project";
+const char *password = "123456789";
 const char *controllerHTML = R"rawliteral(
 <!DOCTYPE html>
 <html>
@@ -426,10 +426,10 @@ const char *controllerHTML = R"rawliteral(
 
 
 //Motors
-#define MOTOR1_PIN 14  //FL
-#define MOTOR2_PIN 27  //FR
-#define MOTOR3_PIN 13  //BL
-#define MOTOR4_PIN 12  //BR
+#define MOTOR1_PIN 14  
+#define MOTOR2_PIN 27  
+#define MOTOR3_PIN 13  
+#define MOTOR4_PIN 12  
 #define MIN_THROTTLE 30
 #define MAX_THROTTLE 255
 
@@ -859,6 +859,7 @@ void setup() {
 
   init_all();
   WifiSetup();
+  ArduinoOTA.begin();
   Wire.begin();
   MPU6050_Setup();
   Serial.begin(115200);
@@ -881,7 +882,7 @@ void loop() {
   updatePID();
   // move_haandler();
   toggles();
-  
+  ArduinoOTA.handle();
 
   delay(10);
 
